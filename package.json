@@ -1,0 +1,26 @@
+{
+  "name": "testing_5sem",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "test:e2e": "playwright test",
+
+    "pretest:unit": "echo 'Running pre-script for unit tests...'",
+    "test:unit": "vitest",
+
+    "pretest:api": "echo 'Running pre-script for API tests...'",
+    "test:api": "playwright test --project=api",
+
+    "pretest:ui": "echo 'Running pre-script for UI tests...'",
+    "test:ui": "playwright test --project=ui"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "vitest": "^2.1.4"
+  }
+}
