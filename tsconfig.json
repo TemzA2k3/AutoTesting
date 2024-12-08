@@ -5,8 +5,8 @@
     "lib": ["es6"],
     "types": ["node", "vitest", "@playwright/test"],
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./"
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["tests/**/*.ts", "helpers/**/*.ts", "playwright.config.ts"],
   "exclude": ["node_modules"]
 }
