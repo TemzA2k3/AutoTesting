@@ -5,7 +5,7 @@ export const selectors = {
   appLogo: '.app_logo',
   cartBadge: '.shopping_cart_badge',
   cartButton: '.shopping_cart_link',
- addToCartButton: (item: string) => `[data-test="add-to-cart-${item.toLowerCase().replace(/ /g, '-')}"]`,
+  addToCartButton: (item: string) => `[data-test="add-to-cart-${item.toLowerCase().replace(/ /g, '-')}"]`,
   cartItem: (item: string) => `.cart_item:has-text("${item}")`,
   checkoutButton: '#checkout',
   continueButton: '#continue',
