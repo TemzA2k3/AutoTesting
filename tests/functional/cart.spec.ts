@@ -1,37 +1,38 @@
 import { test, expect } from '@playwright/test';
-import { selectors } from '../../helpers/selectors';
+import { LoginPage } from '../../pages/LoginPage';
+import { InventoryPage } from '../../pages/InventoryPage';
+import { CartPage } from '../../pages/CartPage';
 
 test.describe('Cart Tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.fill(selectors.usernameInput, 'standard_user');
-    await page.fill(selectors.passwordInput, 'secret_sauce');
-    await page.click(selectors.loginButton);
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+
+    await loginPage.navigate();
+    await loginPage.login('standard_user', 'secret_sauce');
     await expect(page.locator('.inventory_list')).toBeVisible();
   });
 
   test('Verify Adding Item to Cart', async ({ page }) => {
-    const addToCartButton = selectors.addToCartButton('Sauce Labs Backpack');
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
 
-    await page.waitForSelector(addToCartButton, { state: 'visible' });
-    await page.locator(addToCartButton).click();
+    await inventoryPage.addToCart('Sauce Labs Backpack');
+    await inventoryPage.openCart();
 
-    await expect(page.locator(selectors.cartBadge)).toHaveText('1');
-    await page.click(selectors.cartButton);
-    await expect(page.locator(selectors.cartItem('Sauce Labs Backpack'))).toBeVisible();
+    const isItemVisible = await cartPage.isItemVisible('Sauce Labs Backpack');
+    expect(isItemVisible).toBeTruthy();
   });
 
   test('Verify Removing Item from Cart', async ({ page }) => {
-    const addToCartButton = selectors.addToCartButton('Sauce Labs Backpack');
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
 
-    await page.waitForSelector(addToCartButton, { state: 'visible' });
-    await page.locator(addToCartButton).click();
+    await inventoryPage.addToCart('Sauce Labs Backpack');
+    await inventoryPage.openCart();
+    await cartPage.removeItem('Sauce Labs Backpack');
 
-    await page.click(selectors.cartButton);
-    await expect(page.locator(selectors.cartItem('Sauce Labs Backpack'))).toBeVisible();
-
-    const removeButton = page.locator(selectors.cartItem('Sauce Labs Backpack')).locator('button:has-text("Remove")');
-    await removeButton.click();
-    await expect(page.locator(selectors.cartBadge)).not.toBeVisible();
+    const isItemVisible = await cartPage.isItemVisible('Sauce Labs Backpack');
+    expect(isItemVisible).toBeFalsy();
   });
 });
